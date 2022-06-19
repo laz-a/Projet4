@@ -7,14 +7,19 @@
 
 import UIKit
 
-class SelectLayoutStackView: UIStackView {
+final class SelectLayoutStackView: UIStackView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    @IBOutlet private var selectLayoutViews: [SelectLayoutView]!
+    
+    var layout: Layout = .layout2 {
+        didSet {
+            setLayout()
+        }
     }
-    */
-
+    
+    private func setLayout() {
+        for selectLayoutView in selectLayoutViews {
+            selectLayoutView.selected = layout.rawValue == selectLayoutView.tag
+        }
+    }
 }

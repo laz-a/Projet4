@@ -7,14 +7,16 @@
 
 import UIKit
 
-class ImagePickerView: UIView {
+final class ImagePickerView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    //Image view outlet
+    @IBOutlet weak var imageView: UIImageView!
+    
+    //Set image og image view
+    var image: UIImage? {
+        didSet{
+            imageView.image = image
+        }
     }
-    */
 
 }

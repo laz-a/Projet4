@@ -7,14 +7,21 @@
 
 import UIKit
 
-class SelectLayoutView: UIView {
+final class SelectLayoutView: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
+    //Selected image outlet
+    @IBOutlet weak var selectedImageView: UIImageView!
+    
+    //Selected property
+    var selected: Bool = false {
+        didSet {
+            setSelected(selected)
+        }
     }
-    */
+    
+    //Display/Hide selected image on layout button
+    private func setSelected(_ selected: Bool) {
+        selectedImageView.isHidden = !selected
+    }
 
 }
