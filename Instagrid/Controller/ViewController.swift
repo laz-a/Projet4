@@ -7,6 +7,7 @@
 
 import UIKit
 
+//Layout posibilities
 enum Layout: Int {
     case layout1 = 1
     case layout2 = 2
@@ -77,7 +78,7 @@ final class ViewController: UIViewController, UIImagePickerControllerDelegate, U
         }
     }
     
-    //Show image selection view
+    //Display select image picker view
     private func showImagePickerController() {
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
@@ -86,7 +87,7 @@ final class ViewController: UIViewController, UIImagePickerControllerDelegate, U
         present(imagePickerController, animated: true)
     }
     
-    //Display selected image
+    //Display selected image in gridView
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if let tag = selectedImageTag {
@@ -119,36 +120,37 @@ final class ViewController: UIViewController, UIImagePickerControllerDelegate, U
             translationTransform = CGAffineTransform(translationX: -(gridView.frame.origin.x + superHeight + gridView.frame.width), y: 0)
         } else { return }
         
-//        view.intrinsicContentSize.
-        
-        //Animate grid view according to swipe direction and interface orientation
-        UIView.animate(withDuration: 0.3) {
-            self.gridView.transform = translationTransform
-        }
-        
         if grid.isComplete {
-            shareGrid()
-        } else {
+            //Animate grid view according to swipe direction and interface orientation
             UIView.animate(withDuration: 0.3) {
-                self.gridView.transform = .identity
+                self.gridView.transform = translationTransform
             }
             
+            //Display share ActivityViewController
+            shareGrid()
+        } else {
+            //Alert if grid is not completed
             let alertView = UIAlertController(title: "Instagrid", message: "Add images to your grid !", preferredStyle: .alert)
             alertView.addAction(UIAlertAction(title: "Ok", style: .default))
             self.present(alertView, animated: true)
         }
     }
     
+    //Share creation
     private func shareGrid() {
-        let activityView = UIActivityViewController(activityItems: ["Share Instagrid creation", gridView.image], applicationActivities: nil)
+        //Create activityViewController with content
+        let activityView = UIActivityViewController(activityItems: ["Instagrid creation", gridView.image], applicationActivities: nil)
         activityView.isModalInPresentation = true
         
+        //On completion
         activityView.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnedItems: [Any]?, error: Error?) in
             
+            //Restore gridView position
             UIView.animate(withDuration: 0.3) {
                 self.gridView.transform = .identity
             }
             
+            //Test completion
             if completed {
                 print("share completed")
                 return
@@ -160,6 +162,7 @@ final class ViewController: UIViewController, UIImagePickerControllerDelegate, U
             }
         }
         
+        //Display activityView
         self.present(activityView, animated: true)
     }
     
